@@ -1,0 +1,29 @@
+# Dependencies and generated output
+node_modules/
+dist/
+coverage/
+.dart_tool/
+.flutter-plugins-dependencies
+build/
+.pub-cache/
+.idea/
+.vscode/
+*.iml
+
+# Local configuration, runtime data and credentials
+.env
+.env.*
+!.env.example
+*.db
+*.sqlite
+*.sqlite3
+*.db-*
+*.sqlite-*
+*.log
+.DS_Store
+android/local.properties
+**/key.properties
+*.jks
+*.keystore
+*.p12
+*.mobileprovision
