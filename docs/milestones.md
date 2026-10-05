@@ -4,7 +4,8 @@
 
 已完成：移动端优先、三个独立仓库、前后端分离的要求记录；产品业务边界和验收草案。
 已检查：文档路径、目录隔离；当前 Windows 环境存在 Android SDK，未发现可用 Flutter 命令。
-尚未完成：GitHub 远端创建与推送、可运行应用、API、数据库与自动化测试。
+GitHub：已创建独立私有仓库 https://github.com/cn7shi/shared-notebook；推送后检查远端 main 与本地提交一致。
+尚未完成：可运行应用、API、数据库与自动化测试。
 
 ## 后续阶段
 
