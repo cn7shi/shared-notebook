@@ -21,6 +21,7 @@ Flutter 已接入角色、私人日记、分享/撤回、关联对话、来源�
 
 ## 文档
 
+- [新人接手教程：启动、源码路线、验证与排错](docs/handoff.md)
 - [三款产品阶段进展报告](docs/status-report.md)
 - [需求与验收](docs/requirements.md)
 - [架构边界](docs/architecture.md)
