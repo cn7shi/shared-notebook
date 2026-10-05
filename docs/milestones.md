@@ -17,7 +17,13 @@
 自查发现较早关联角色日记可能被“最近五篇”筛选遗漏，修正为优先当前消息与用户选中记录，新增长文本预算及无效结果测试后，19 项完整重跑通过。
 SQL 迁移固定 LF 换行，避免跨平台检出的换行差异改变迁移校验值。
 
-已配置 GitHub Actions 在后端/契约更新时执行同一套真实数据库测试。推送、远端验证和本地运行结果另补。
+阶段代码 `40e195d8e6c7598ac49ae981a4d4f5ba9c218379` 已推送，远端 main 核验一致。
+GitHub Actions 在后端/契约更新时执行同一套真实数据库测试；
+[本次 Linux 验证](https://github.com/cn7shi/shared-notebook/actions/runs/37329477949) 已完成，结论 success。
+本地 `npm run dev` 已启动，`http://127.0.0.1:3300/health` 返回 ok，`/api/docs` 返回 200。
+通过独立的本地合成账户实测 capabilities 返回 disabled，后台 worker 将日记任务持久化为 failed / PROVIDER_NOT_CONFIGURED；
+没有生成内容或外部模型请求。该冒烟账户会话已撤销，合成角色/失败任务留在忽略的开发数据库。
+本地配置、口令、运行数据、node_modules 和编译产物均未纳入 Git。
 本阶段未实现：Flutter 客户端、真实供应商适配、真实 AI 陪伴效果、多日语义检索、自动记忆提取、
 主动消息/定时任务、生产部署，以及 Android / iOS 验收。
 
