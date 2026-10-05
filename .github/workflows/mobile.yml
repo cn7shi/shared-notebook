@@ -1,0 +1,45 @@
+name: Flutter and real API
+on:
+  push:
+    paths: ['mobile/**', 'server/**', 'contracts/**', '.github/workflows/mobile.yml']
+  pull_request:
+    paths: ['mobile/**', 'server/**', 'contracts/**', '.github/workflows/mobile.yml']
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+          cache-dependency-path: server/package-lock.json
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.47.6'
+          channel: stable
+          cache: true
+      - run: npm ci && npm run build
+        working-directory: server
+      - run: flutter pub get --enforce-lockfile
+        working-directory: mobile
+      - run: flutter analyze
+        working-directory: mobile
+      - name: Verify Flutter against a real local API
+        shell: bash
+        run: |
+          (cd server && node dist/scripts/dev.js) > "$RUNNER_TEMP/shared-notebook-api.log" 2>&1 &
+          api_pid=$!
+          trap 'kill "$api_pid" 2>/dev/null || true' EXIT
+          ready=false
+          for attempt in $(seq 1 60); do
+            if curl --fail --silent http://127.0.0.1:3300/health > /dev/null; then ready=true; break; fi
+            if ! kill -0 "$api_pid" 2>/dev/null; then cat "$RUNNER_TEMP/shared-notebook-api.log"; exit 1; fi
+            sleep 1
+          done
+          if [ "$ready" != true ]; then cat "$RUNNER_TEMP/shared-notebook-api.log"; exit 1; fi
+          cd mobile
+          flutter test --dart-define=TEST_API_BASE_URL=http://127.0.0.1:3300

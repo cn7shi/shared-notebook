@@ -7,8 +7,9 @@
 ## 当前状态
 
 已实现独立后端：账户、角色、个人日记、逐篇分享/撤回、关联对话、来源记忆、持久化生成任务与请求回执。
-默认模型接口关闭；未配置服务商时任务明确失败，不会返回假生成内容。Flutter 客户端尚未实现。
-权限与生成规则已用真实 PostgreSQL 测试，最新结果见阶段记录。
+Flutter 已接入角色、私人日记、分享/撤回、关联对话、来源记忆和任务状态，输入及待确认请求按账户保留在本机。
+默认模型接口关闭；页面明确禁用新发送与生成，已有失败任务如实显示，不会返回假生成内容。
+权限、恢复和分页规则已用真实 PostgreSQL / API 测试，平台验收结果见阶段记录。
 已创建独立私有仓库：https://github.com/cn7shi/shared-notebook。阶段推送以远端提交验证为准。
 
 ## 目录规划
@@ -27,6 +28,8 @@
 - [功能与完成边界](docs/features.md)
 - [分享和生成决策](docs/decisions/002-consent-and-generation-boundaries.md)
 - [API 接入说明](contracts/README.md)
+- [手机端启动与验证](mobile/README.md)
+- [分享确认与本机恢复决策](docs/decisions/003-mobile-consent-and-recovery.md)
 
 每个阶段同时提交代码、决策和真实验证结果，然后推送本产品仓库。
 

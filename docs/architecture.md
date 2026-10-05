@@ -57,7 +57,8 @@ Flutter 页面 → 页面状态 / ViewModel → Repository 接口 → HTTP 客�
 每个里程碑同时提交源代码、决策、验证结果，并推送对应产品仓库。
 未执行的测试明确标为未验证。数据迁移验证升级路径，兼容旧客户端。
 
-M1 已实现独立 API、数据库迁移和 OpenAPI；Flutter 客户端尚未开始。
+M1 已实现独立 API、数据库迁移和 OpenAPI；M2 Flutter 已按 domain / application / data / presentation 分层接入。
+客户端使用 Repository 隔离 HTTP，SessionStore / WorkStore 隔离会话与本机输入；角色、授权和生成任务仍由后端裁决。
 HTTP Controller 只负责身份、输入、错误与返回；NotebookService 管理授权、版本和幂等业务；
 GenerationWorker 管理持久任务、上下文构建、超时及结果发布；PostgresNotebook 隔离 SQL 和行映射。
 ModelProvider 是服务端替换点，默认 DisabledProvider。不会因为数据库或模型供应商变化而要求页面读取数据库结构。
@@ -67,7 +68,7 @@ ModelProvider 是服务端替换点，默认 DisabledProvider。不会因为数�
 
 ## 环境现状
 
-当前开发机是 Windows，已准备 Flutter 3.47.6 / Dart 3.13.5 和 Android SDK；本仓库尚未生成 Flutter 工程。
+当前开发机是 Windows，已准备 Flutter 3.47.6 / Dart 3.13.5 和 Android SDK；本仓库包含 Android / iOS / Web 工程。
 iOS 构建依赖 macOS / Xcode；后续可以配置 macOS 构建环境，
 但编译成功不能替代 iOS 真机输入和生命周期验证。
 
