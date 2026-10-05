@@ -21,7 +21,9 @@ jobs:
         with:
           flutter-version: '3.47.6'
           channel: stable
-          cache: true
+          # The optional post-job cache hashes the whole workspace and failed
+          # after the local database run. Keep validation independent of it.
+          cache: false
       - run: npm ci && npm run build
         working-directory: server
       - run: flutter pub get --enforce-lockfile
