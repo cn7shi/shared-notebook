@@ -24,7 +24,15 @@ Android API 35 / Pixel 5 模拟器使用真实本地 API：完整集成场景 1/
 首次 [GitHub 运行](https://github.com/cn7shi/shared-notebook/actions/runs/37334231278) 的静态检查和 21 项测试均通过，
 但可选 Flutter 缓存收尾的全仓 hashFiles 失败，整个工作流为 failure；没有将其记成 CI 通过。
 先关闭该可选缓存并重跑，以增加 SDK 下载时间换取明确的验证结果，不放宽任何测试。
-普通包重启恢复及最终 CI 结果在后续验证记录补齐。
+缓存修复提交 `e83d6fd4bf1e24107ed2fb3359047be2e8ff37f1` 已推送；
+[最终 GitHub 运行](https://github.com/cn7shi/shared-notebook/actions/runs/37334865064) 完整完成，结论 success，执行静态检查和全部 21 项测试。
+此修复不改 mobile 源码，普通 APK 仍对应 `7cc4552`。
+
+普通包实测：覆盖安装后恢复测试登录和中文对话草稿；修改草稿后强制停止应用并重新启动，
+再次进入同一对话，完整输入与测试标记一致，发送按钮仍为禁用。已检查首页/对话实际截图。
+APK SHA-256：`949271D4A16FEF187706C8E2519E52A94958AE8294DCA21670DE612E7739F214`。
+构建清单位于 mobile/build/app/outputs/flutter-apk/build-manifest.json；
+本机验收记录与截图位于忽略的 .local/android/，不含真实用户内容。
 
 真实 API 测试撤销其合成账户会话；设备测试保留专用测试账户和本机草稿供普通包恢复验证。
 合成记录留在忽略的开发数据库，未提交账号口令、密钥、本地数据或安装包。
