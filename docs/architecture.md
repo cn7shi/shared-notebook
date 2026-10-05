@@ -29,8 +29,8 @@ Flutter 页面 → 页面状态 / ViewModel → Repository 接口 → HTTP 客�
 ## 技术选型
 
 - 客户端：Flutter + Dart，优先验证中文输入、手机键盘、应用生命周期及触控。
-- 服务端提案：NestJS + TypeScript，独立 HTTP 服务。
-- 服务端数据库提案：PostgreSQL；使用迁移管理结构，以事务和约束保证一致性。
+- 服务端：NestJS 12 + TypeScript 5.9，独立 HTTP 服务。
+- 服务端数据库：PostgreSQL；使用迁移管理结构，以事务和约束保证一致性。
 - 接口：REST + OpenAPI，明确字段、错误、权限和版本兼容规则。
 - Dart API 客户端可从 OpenAPI 生成，页面只依赖上层 Repository。
 - AI 调用、密钥、上下文筛选、任务状态和供应商适配全部在服务端。
@@ -57,11 +57,17 @@ Flutter 页面 → 页面状态 / ViewModel → Repository 接口 → HTTP 客�
 每个里程碑同时提交源代码、决策、验证结果，并推送对应产品仓库。
 未执行的测试明确标为未验证。数据迁移验证升级路径，兼容旧客户端。
 
-当前仅完成设计文档，没有运行中的应用、API、数据库迁移或生成客户端。
+M1 已实现独立 API、数据库迁移和 OpenAPI；Flutter 客户端尚未开始。
+HTTP Controller 只负责身份、输入、错误与返回；NotebookService 管理授权、版本和幂等业务；
+GenerationWorker 管理持久任务、上下文构建、超时及结果发布；PostgresNotebook 隔离 SQL 和行映射。
+ModelProvider 是服务端替换点，默认 DisabledProvider。不会因为数据库或模型供应商变化而要求页面读取数据库结构。
+写事务使用账户锁统一排序，读事务使用共享账户锁；模型网络调用在事务外，结果发布前复核上下文代次和任务执行标识。
+本阶段采用同进程定时轮询数据库任务队列，没有外置消息队列；数据库保存任务状态，重启可继续处理未发送的任务。
+已经发送但中断的任务到期失败，显式重试而非自动重复调用。具体权限与历史取舍见 ADR-002。
 
 ## 环境现状
 
-当前开发机是 Windows，存在 Android SDK，Flutter 尚未在命令路径和已检查位置发现。
+当前开发机是 Windows，已准备 Flutter 3.47.6 / Dart 3.13.5 和 Android SDK；本仓库尚未生成 Flutter 工程。
 iOS 构建依赖 macOS / Xcode；后续可以配置 macOS 构建环境，
 但编译成功不能替代 iOS 真机输入和生命周期验证。
 
